@@ -26,11 +26,11 @@ def main():
 
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray_frame = gray_frame[260:660, 750:1150]
-        cv2.imshow('video', gray_frame)
-        cv2.waitKey(1)
+        # cv2.imshow('video', gray_frame)
+        # cv2.waitKey(1)
 
-    # frame_filename = os.path.join(output_path, f"{frame_count}.png")
-    # cv2.imwrite(frame_filename, frame)
+        frame_filename = os.path.join(output_path, f"{frame_count}.png")
+        cv2.imwrite(frame_filename, gray_frame)
 
     cap.release()
     cv2.destroyAllWindows()
