@@ -24,12 +24,12 @@ class SonarPairDataset(Dataset):
 
         current_img_name = self.image_names[idx]
 
-        if idx < 10:
-            idx2 = random.randint(idx, idx+10-1)
-        elif idx > self.num_images-10:
-            idx2 = random.randint(idx-10, idx-1)
-        else:
-            idx2 = random.randint(idx-10, idx+10-1)
+        # if idx < 10:
+        #     idx2 = random.randint(idx, idx+5-1)
+        # elif idx > self.num_images-5:
+        #     idx2 = random.randint(idx-5, idx-1)
+        # else:
+        #     idx2 = random.randint(idx-5, idx+5-1)
 
         # idx2 = random.randint(0, self.num_images-1)
 
@@ -38,7 +38,7 @@ class SonarPairDataset(Dataset):
         # idx2 = random.randint(min_idx, max_idx)
 
         fixed_img_name = os.path.join(self.dir, current_img_name)
-        moving_img_name = os.path.join(self.dir, self.image_names[idx2])
+        moving_img_name = os.path.join(self.dir, self.image_names[idx+1])
         
         fixed_img = Image.open(fixed_img_name)
         moving_img = Image.open(moving_img_name)
