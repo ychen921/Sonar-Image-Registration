@@ -25,8 +25,7 @@ def main():
         frame_count +=1
 
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        # gray_frame = cv2.resize(gray_frame, (960, 540))
-
+        gray_frame = gray_frame[260:660, 750:1150]
         cv2.imshow('video', gray_frame)
         cv2.waitKey(1)
 
