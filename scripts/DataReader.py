@@ -1,6 +1,7 @@
 import os
 import re
 import torch
+import random
 from PIL import Image
 from torch.utils.data import Dataset
 
@@ -11,6 +12,7 @@ class SonarPairDataset(Dataset):
         self.transform = transform
         self.image_names = self.sort_filenames_by_number([filename for filename in os.listdir(self.dir) if filename.endswith('.png')])
         self.num_images = len(self.image_names)
+        self.shift = 10
        
     def __len__(self):
         return self.num_images-1
@@ -22,8 +24,15 @@ class SonarPairDataset(Dataset):
 
         current_img_name = self.image_names[idx]
 
+        if idx < self.shift:
+            idx2 = random.randint(idx, idx+self.shift-1)
+        elif idx > self.num_images-self.shift:
+            idx2 = random.randint(idx-self.shift, idx-1)
+        else:
+            idx2 = random.randint(idx-self.shift, idx+self.shift-1)
+
         fixed_img_name = os.path.join(self.dir, current_img_name)
-        moving_img_name = os.path.join(self.dir, self.image_names[idx+1])
+        moving_img_name = os.path.join(self.dir, self.image_names[idx2])
         # print(fixed_img_name, moving_img_name)
         
         fixed_img = Image.open(fixed_img_name)
@@ -33,7 +42,7 @@ class SonarPairDataset(Dataset):
             fixed_img = self.transform(fixed_img)
             moving_img = self.transform(moving_img)
 
-        return fixed_img, moving_img
+        return fixed_img, moving_img, fixed_img_name, moving_img_name
     
     def extract_number(self, filename):
         # Use regular expression to extract the number part of the filename
