@@ -1,16 +1,15 @@
-import torch
-from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms
-from PIL import Image
-import random
 import os
+import re
+import torch
+from PIL import Image
+from torch.utils.data import Dataset
 
 
 class SonarPairDataset(Dataset):
     def __init__(self, data_folder, transform=None):
         self.dir = data_folder
         self.transform = transform
-        self.image_names = [filename for filename in os.listdir(self.dir) if filename.endswith('.png')]
+        self.image_names = self.sort_filenames_by_number([filename for filename in os.listdir(self.dir) if filename.endswith('.png')])
         self.num_images = len(self.image_names)
        
     def __len__(self):
@@ -25,6 +24,7 @@ class SonarPairDataset(Dataset):
 
         fixed_img_name = os.path.join(self.dir, current_img_name)
         moving_img_name = os.path.join(self.dir, self.image_names[idx+1])
+        # print(fixed_img_name, moving_img_name)
         
         fixed_img = Image.open(fixed_img_name)
         moving_img = Image.open(moving_img_name)
@@ -34,5 +34,16 @@ class SonarPairDataset(Dataset):
             moving_img = self.transform(moving_img)
 
         return fixed_img, moving_img
+    
+    def extract_number(self, filename):
+        # Use regular expression to extract the number part of the filename
+        match = re.search(r'(\d+)', filename)
+        if match:
+            return int(match.group(1))
+        return None
+
+    def sort_filenames_by_number(self, filenames):
+        # Sort filenames based on the extracted number using the `extract_number` function
+        return sorted(filenames, key=self.extract_number)
 
         
