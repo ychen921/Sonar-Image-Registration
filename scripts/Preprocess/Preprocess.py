@@ -1,10 +1,12 @@
 import os
 import cv2
+import argparse
 import numpy as np
 from tqdm import tqdm
 
-clip_path = r"/home/ychen921/808E/final_project/Dataset/videos/video1.avi"
-output_path = r"/home/ychen921/808E/final_project/Dataset/Set1"
+
+# clip_path = r"/home/ychen921/808E/final_project/Dataset/videos/video1.avi"
+# output_path = r"/home/ychen921/808E/final_project/Dataset/Set1"
 
 R = np.arange(0.0025, 3.5025, 0.0025)
 Az = np.radians(np.arange(-30, 30, 0.225))
@@ -42,6 +44,17 @@ def Convert2RA(img):
 
 
 def main():
+
+    Parser = argparse.ArgumentParser()
+    Parser.add_argument('--ClipPath', default='/home/ychen921/808E/final_project/Dataset/videos/video1.avi', 
+                        help='Clip path of images, Default:/home/ychen921/808E/final_project/Dataset/videos/video1.avi')
+    Parser.add_argument('--SavePath', default='/home/ychen921/808E/final_project/Dataset/Set1', 
+                        help='Save path of images, Default:/home/ychen921/808E/final_project/Dataset/Set1')
+    
+    Args = Parser.parse_args()
+    clip_path = Args.ClipPath
+    output_path = Args.SavePath
+
     os.makedirs(output_path, exist_ok=True)
     cap = cv2.VideoCapture(clip_path)
 
