@@ -6,22 +6,30 @@ from tqdm import tqdm
 clip_path = r"/home/ychen921/808E/final_project/Dataset/videos/video1.avi"
 output_path = r"/home/ychen921/808E/final_project/Dataset/Set1"
 
-ptsa_1 = (0, 499)
-ptsa_2 = (0, 194)
-ptsa_3 = (175,499)
+R = np.arange(0.0025, 3.5025, 0.0025)
+Az = np.radians(np.arange(-30, 30, 0.225))
 
-ptsb_1 = (499, 193)
-ptsb_2 = (323, 499)
-ptsb_3 = (499,499)
+x0 = 959
+y0 = 1025
+R_bold = 971
 
-triangle_pts1 = np.array([ptsa_1, ptsa_2, ptsa_3], np.int32)
-triangle_pts2 = np.array([ptsb_1, ptsb_2, ptsb_3], np.int32)
+X_RES = 267
+Y_RES = 1400
 
-def set_color(img, pts):
-    pts = pts.reshape((-1, 1, 2))
-    triangle_color = (0, 0, 0)
-    cv2.fillPoly(img, [pts], triangle_color)
-    return img
+R = np.arange(0.0025, 3.5025, 0.0025)
+Az = np.radians(np.arange(-30, 30, 0.225))
+
+def Convert2RA(img):
+    sonar_image = np.zeros((Y_RES, X_RES))
+    for i in range(Y_RES):
+        r = R[i]
+        for j in range(X_RES):
+            theta = Az[j]
+            x = int(x0 + (R_bold/3.5)*r*np.sin(theta))
+            y = int(y0 - (R_bold/3.5)*r*np.cos(theta))
+            sonar_image[i,j] = img[y,x]
+    return sonar_image
+
 
 def main():
     os.makedirs(output_path, exist_ok=True)
@@ -32,32 +40,23 @@ def main():
         return
     
     frame_count = 0
-
     while True:
         ret, frame = cap.read()
-        
         if not ret:
             break
-
         frame_count +=1
-
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        gray_frame = gray_frame[400:900,710:1210]
-        
-        gray_frame = set_color(img=gray_frame, pts=triangle_pts1)
-        gray_frame = set_color(img=gray_frame, pts=triangle_pts2)
 
-        # gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        save_frame = Convert2RA(gray_frame)
 
-        cv2.imshow('video', gray_frame)
+        cv2.imshow('video', save_frame)
         cv2.waitKey(1)
 
         frame_filename = os.path.join(output_path, f"{frame_count}.png")
-        cv2.imwrite(frame_filename, gray_frame)
+        cv2.imwrite(frame_filename, save_frame)
 
     cap.release()
     cv2.destroyAllWindows()
-
-
+    
 if __name__ == '__main__':
     main()
