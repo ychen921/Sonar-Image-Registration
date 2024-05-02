@@ -12,6 +12,10 @@ class AIRNet(nn.Module):
                  ndim=2
                  ):
         
-        super().__init__(AIRNet, self)
+        super().__init__()
         
-        pass
+        assert (
+            num_dense_layers >= 1
+        ), "Number of dense layers should at least be 1 (excluding the final dense output layer)."
+        
+        self.ndim = ndim
