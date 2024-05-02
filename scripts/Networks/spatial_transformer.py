@@ -42,7 +42,6 @@ class Transformer(ABC, nn.Module):
         return ret
 
 
-
 class AffineTransformer(Transformer):
     def apply_transform(
         self,
