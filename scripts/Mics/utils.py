@@ -2,6 +2,58 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+class StableStd(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, tensor):
+        assert tensor.numel() > 1
+        ctx.tensor = tensor.detach()
+        res = torch.std(tensor).detach()
+        ctx.result = res.detach()
+        return res
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        tensor = ctx.tensor.detach()
+        result = ctx.result.detach()
+        e = 1e-6
+        assert tensor.numel() > 1
+        return (
+            (2.0 / (tensor.numel() - 1.0))
+            * (grad_output.detach() / (result.detach() * 2 + e))
+            * (tensor.detach() - tensor.mean().detach())
+        )
+
+
+stablestd = StableStd.apply
+
+class ScaledTanH(nn.Module):
+    def __init__(self, scaling):
+        super().__init__()
+        self.scaling = scaling
+
+    def forward(self, input):
+        return torch.tanh(input) * self.scaling
+
+    def __repr__(self):
+        return self.__class__.__name__ + "(" + "scaling = " + str(self.scaling) + ")"
+    
+
+class ScalingAF(nn.Module):
+    def __init__(self, scale_factor):
+        super().__init__()
+        self.scale_factor = scale_factor
+
+    def forward(self, input):
+        return self.scale_factor ** torch.tanh(input)
+
+    def __repr__(self):
+        return (
+            self.__class__.__name__
+            + "("
+            + "scale_factor="
+            + str(self.scale_factor)
+            + ")"
+        )
 
 class Resampler(nn.Module):
     """
