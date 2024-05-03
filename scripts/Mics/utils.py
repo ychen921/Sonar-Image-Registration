@@ -1,6 +1,15 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import matplotlib.pyplot as plt
+import sys
+
+sys.dont_write_bytecode = True
+
+def plot_loss(LossEpochs):
+    plt.plot(LossEpochs)
+    plt.show()
+
 
 class StableStd(torch.autograd.Function):
     @staticmethod

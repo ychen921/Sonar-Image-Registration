@@ -1,9 +1,11 @@
 import torch
+import sys
 from abc import ABC, abstractmethod
 from typing import Optional, Tuple, Union
 from torch import nn, Tensor, Size
 from Mics.utils import *
 
+sys.dont_write_bytecode = True
 
 class Transformer(ABC, nn.Module):
     def __init__(self, ndim: int, coord_dim: int = 1):

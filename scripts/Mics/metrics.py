@@ -1,12 +1,12 @@
 import math
 from typing import Optional, Tuple
-
 import torch
 from torch import Tensor
 from torch.nn.modules.loss import _Loss
-
+import sys
 from Mics.utils import stablestd
 
+sys.dont_write_bytecode = True
 
 # TODO: add masks.
 def ncc(x1, x2, e=1e-10):

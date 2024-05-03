@@ -1,9 +1,12 @@
 import torch
 import torch.nn as nn
 from math import pi
-from ConvBlock import ConvBlock
+import sys
+from Networks.ConvBlock import ConvBlock
 from Mics.utils import ScaledTanH, ScalingAF
 from Networks.spatial_transformer import AffineTransformer
+
+sys.dont_write_bytecode = True
 
 class AIRNet(nn.Module):
     def __init__(self, 

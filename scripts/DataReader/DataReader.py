@@ -2,9 +2,11 @@ import os
 import re
 import torch
 import random
+import sys
 from PIL import Image
 from torch.utils.data import Dataset
 
+sys.dont_write_bytecode = True
 
 class SonarPairDataset(Dataset):
     def __init__(self, data_folder, transform=None):
@@ -44,7 +46,7 @@ class SonarPairDataset(Dataset):
             fixed_img = self.transform(fixed_img)
             moving_img = self.transform(moving_img)
 
-        return fixed_img, moving_img, fixed_img_name, moving_img_name
+        return fixed_img, moving_img#, fixed_img_name, moving_img_name
     
     def extract_number(self, filename):
         # Use regular expression to extract the number part of the filename

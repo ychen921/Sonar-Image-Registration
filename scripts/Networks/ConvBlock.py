@@ -2,7 +2,10 @@ from math import pi
 from collections import OrderedDict
 import numpy as np
 import torch
+import sys
 from torch import nn
+
+sys.dont_write_bytecode = True
 
 class ConvBlock(nn.Sequential):
     def __init__(
