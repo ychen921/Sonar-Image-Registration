@@ -45,7 +45,7 @@ def main():
     MiniBatchSize = Args.MiniBatchSize
 
     transform = transforms.Compose([
-        transforms.Resize((256, 256)),  # Resize images to 256x256
+        transforms.Resize((128, 128)),  # Resize images to 128x128
         transforms.ToTensor()            # Convert images to tensors
     ])
 

@@ -26,7 +26,7 @@ class Solver(object):
         for epoch in range(self.epochs):
             loss_epoch = []
             
-            print(f"Epoch {epoch}, Learning Rate: {self.optimizer.param_groups[0]['lr']}")
+            print(f"Epoch {epoch+1}, Learning Rate: {self.optimizer.param_groups[0]['lr']}")
 
             for i, (fix_img, mov_img) in enumerate(tqdm(self.DataLoader)):
                 fix_img = (fix_img/255.0).to(self.device)
@@ -53,6 +53,6 @@ class Solver(object):
 
             LossThisEpoch = sum(loss_epoch) / len(loss_epoch)
             loss_values.append(LossThisEpoch)
-            print('Epoch:{}, NCC Loss:{}\n'.format(epoch, LossThisEpoch))
+            print('Epoch:{}, NCC Loss:{}\n'.format(epoch+1, LossThisEpoch))
 
         plot_loss(loss_values)

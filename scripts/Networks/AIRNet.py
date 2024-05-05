@@ -13,9 +13,9 @@ class AIRNet(nn.Module):
                  kernel_size=3, 
                  kernels=32, 
                  linear_nodes=64,
-                 num_conv_layers=5,
+                 num_conv_layers=4,
                  num_dense_layers=2,
-                 num_downsamplings=4,
+                 num_downsamplings=3,
                  ndim=2
                  ):
         
