@@ -12,51 +12,29 @@ class SonarPairDataset(Dataset):
     def __init__(self, data_folder, transform=None):
         self.dir = data_folder
         self.transform = transform
-        self.image_names = self.sort_filenames_by_number([filename for filename in os.listdir(self.dir) if filename.endswith('.png')])
+        self.image_names = [filename for filename in os.listdir(self.dir) if filename.startswith('fixed_')]
         self.num_images = len(self.image_names)
-        self.shift = 20
+        
        
     def __len__(self):
-        return self.num_images-1
+        return self.num_images
 
     def __getitem__(self, idx):
 
         if torch.is_tensor(idx):
             idx = idx.tolist()
 
-        current_img_name = self.image_names[idx]
+        fixed_image_name = self.image_names[idx]
+        moving_image_name = f"moving_{fixed_image_name.split('_')[1]}"
 
-        if idx < self.shift:
-            idx2 = random.randint(idx+1, idx+self.shift)
-        elif idx > self.num_images-self.shift:
-            idx2 = random.randint(idx-self.shift, idx-1)
-        else:
-            while True:
-                idx2 = random.randint(idx-self.shift, idx+self.shift)
-                if idx != idx2: break
+        fixed_image_path = os.path.join(self.dir, fixed_image_name)
+        moving_image_path = os.path.join(self.dir, moving_image_name)
 
-        fixed_img_name = os.path.join(self.dir, current_img_name)
-        moving_img_name = os.path.join(self.dir, self.image_names[idx2])
-        # print(fixed_img_name, moving_img_name)
-        
-        fixed_img = Image.open(fixed_img_name)
-        moving_img = Image.open(moving_img_name)
+        fixed_image = Image.open(fixed_image_path).convert('L')
+        moving_image = Image.open(moving_image_path).convert('L')
 
         if self.transform:
-            fixed_img = self.transform(fixed_img)
-            moving_img = self.transform(moving_img)
+            fixed_image = self.transform(fixed_image)
+            moving_image = self.transform(moving_image)
 
-        return fixed_img, moving_img#, fixed_img_name, moving_img_name
-    
-    def extract_number(self, filename):
-        # Use regular expression to extract the number part of the filename
-        match = re.search(r'(\d+)', filename)
-        if match:
-            return int(match.group(1))
-        return None
-
-    def sort_filenames_by_number(self, filenames):
-        # Sort filenames based on the extracted number using the `extract_number` function
-        return sorted(filenames, key=self.extract_number)
-
-        
+        return fixed_image, moving_image
