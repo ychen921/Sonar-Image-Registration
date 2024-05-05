@@ -32,8 +32,8 @@ print('using device:', device)
 def main():
 
     Parser = argparse.ArgumentParser()
-    Parser.add_argument('--DataPath', default="/home/ychen921/808E/final_project/Dataset/Set1", 
-                        help='Base path of images, Default:/home/ychen921/808E/final_project/Dataset/Set1')
+    Parser.add_argument('--DataPath', default="/home/ychen921/808E/final_project/Dataset/Train", 
+                        help='Base path of images, Default:/home/ychen921/808E/final_project/Dataset/Train')
     Parser.add_argument('--NumEpochs', type=int, default=20, 
                         help='Number of Epochs to Train for, Default:20')
     Parser.add_argument('--MiniBatchSize', type=int, default=64, 
@@ -49,9 +49,11 @@ def main():
         transforms.ToTensor()            # Convert images to tensors
     ])
 
+    # Initialize Data Loader
     SonarPair = SonarPairDataset(data_folder=DataPath, transform=transform)
-    data_loader = DataLoader(SonarPair, batch_size=MiniBatchSize, shuffle=True)
+    data_loader = DataLoader(SonarPair, batch_size=MiniBatchSize, shuffle=False)
 
+    # Train the model
     solver = Solver(DataLoader=data_loader, epochs=NumEpochs, learning_rate=1e-3, device=device)
     solver.train()
 

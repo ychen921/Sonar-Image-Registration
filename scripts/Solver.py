@@ -1,10 +1,12 @@
 import torch
 import torch.nn as nn
+import sys
+
 from Mics.utils import plot_loss
 from Mics.metrics import NCC
 from Networks.AIRNet import AIRNet
 from tqdm import tqdm
-import sys
+
 sys.dont_write_bytecode = True
 
 class Solver(object):
@@ -36,7 +38,7 @@ class Solver(object):
                 # Compute loss and its gradient
                 loss = self.loss_func(fix_img, wraped)
                 loss_epoch.append(loss.item())
-
+                
                 # Backpropation
                 loss.backward()
 

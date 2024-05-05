@@ -4,8 +4,8 @@ import random
 from tqdm import tqdm
 
 
-DataPath = r'/home/ychen921/808E/final_project/Dataset/Set3'
-SavePath = r'/home/ychen921/808E/final_project/Dataset/Train'
+DataPath = r'/home/ychen921/808E/final_project/Dataset/Set2'
+SavePath = r'/home/ychen921/808E/final_project/Dataset/Test'
 IamgeType = '.png'
 
 def DuplicatedCheck(name, name_list):
