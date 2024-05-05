@@ -30,17 +30,20 @@ print('using device:', device)
 def main():
 
     Parser = argparse.ArgumentParser()
-    Parser.add_argument('--DataPath', default="/home/ychen921/808E/final_project/Dataset/Train", 
+    Parser.add_argument('--DataPath', default="/home/ychen921/808E/final_project/Dataset/Overfit", 
                         help='Base path of images, Default:/home/ychen921/808E/final_project/Dataset/Train')
-    Parser.add_argument('--NumEpochs', type=int, default=10, 
+    Parser.add_argument('--NumEpochs', type=int, default=50, 
                         help='Number of Epochs to Train for, Default:10')
-    Parser.add_argument('--MiniBatchSize', type=int, default=32, 
+    Parser.add_argument('--MiniBatchSize', type=int, default=16, 
                         help='Size of the MiniBatch to use, Default:32')
+    Parser.add_argument('--LearningRate', type=int, default=1e-3, 
+                        help='Size of the MiniBatch to use, Default:0.005')
 
     Args = Parser.parse_args()
     DataPath = Args.DataPath
     NumEpochs = Args.NumEpochs
     MiniBatchSize = Args.MiniBatchSize
+    lr = Args.LearningRate
 
     transform = transforms.Compose([
         transforms.Resize((128, 128)),  # Resize images to 128x128
@@ -56,7 +59,7 @@ def main():
     # summary(model, (1, 128, 128))
 
     # Train the model
-    solver = Solver(model=model, DataLoader=data_loader, epochs=NumEpochs, learning_rate=1e-3, device=device)
+    solver = Solver(model=model, DataLoader=data_loader, epochs=NumEpochs, learning_rate=lr, device=device)
     solver.train()
 
 if __name__ == '__main__':
