@@ -1,18 +1,16 @@
 import torch
 import torch.nn
-import torch.optim as optim
+from torchsummary import summary
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-import torch.nn.functional as F
-import torchvision.datasets as dset
 import torchvision.transforms as T
 
-import argparse
-from tqdm import tqdm
-import sys
 import os
-import time
+import sys
+import argparse
 from Solver import Solver
+from Networks.AIRNet_v2 import AIRNet_v2
+from Networks.AIRNet import AIRNet
 from DataReader.DataReader import SonarPairDataset
 
 
@@ -34,10 +32,10 @@ def main():
     Parser = argparse.ArgumentParser()
     Parser.add_argument('--DataPath', default="/home/ychen921/808E/final_project/Dataset/Train", 
                         help='Base path of images, Default:/home/ychen921/808E/final_project/Dataset/Train')
-    Parser.add_argument('--NumEpochs', type=int, default=20, 
-                        help='Number of Epochs to Train for, Default:20')
-    Parser.add_argument('--MiniBatchSize', type=int, default=64, 
-                        help='Size of the MiniBatch to use, Default:64')
+    Parser.add_argument('--NumEpochs', type=int, default=10, 
+                        help='Number of Epochs to Train for, Default:10')
+    Parser.add_argument('--MiniBatchSize', type=int, default=32, 
+                        help='Size of the MiniBatch to use, Default:32')
 
     Args = Parser.parse_args()
     DataPath = Args.DataPath
@@ -52,9 +50,13 @@ def main():
     # Initialize Data Loader
     SonarPair = SonarPairDataset(data_folder=DataPath, transform=transform)
     data_loader = DataLoader(SonarPair, batch_size=MiniBatchSize, shuffle=False)
+    
+    model = AIRNet().to(device)
+    # model = AIRNet_v2().to(device)
+    # summary(model, (1, 128, 128))
 
     # Train the model
-    solver = Solver(DataLoader=data_loader, epochs=NumEpochs, learning_rate=1e-3, device=device)
+    solver = Solver(model=model, DataLoader=data_loader, epochs=NumEpochs, learning_rate=1e-3, device=device)
     solver.train()
 
 if __name__ == '__main__':

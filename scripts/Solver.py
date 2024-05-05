@@ -4,20 +4,22 @@ import sys
 
 from Mics.utils import plot_loss
 from Mics.metrics import NCC
-from Networks.AIRNet import AIRNet
 from tqdm import tqdm
 
 sys.dont_write_bytecode = True
 
 class Solver(object):
-    def __init__(self, DataLoader, epochs, learning_rate=1e-3, device=torch.device('cpu')):
+    def __init__(self, model, DataLoader, epochs, learning_rate=1e-3, device=torch.device('cpu')):
         self.device = device
         self.epochs = epochs
         self.lr = learning_rate
         self.DataLoader = DataLoader
-        self.model = AIRNet(kernels=16).to(self.device)
+
+        # self.model = AIRNet(kernels=16).to(self.device)
+        self.model = model.to(self.device)
+
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr, amsgrad=True)
-        self.scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer, step_size=5, gamma=0.1)
+        self.scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer, step_size=5, gamma=0.5)
         self.loss_func = NCC()
         
     def train(self):
