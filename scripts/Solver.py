@@ -25,8 +25,8 @@ class Solver(object):
         loss_values = []
         for epoch in range(self.epochs):
             loss_epoch = []
-            # Update the learning rate
-            self.scheduler.step()
+            
+            print(f"Epoch {epoch}, Learning Rate: {self.optimizer.param_groups[0]['lr']}")
 
             for i, (fix_img, mov_img) in enumerate(tqdm(self.DataLoader)):
                 fix_img = (fix_img/255.0).to(self.device)
@@ -47,6 +47,9 @@ class Solver(object):
 
                 # Adjust learning rate
                 self.optimizer.step()
+
+            # Update the learning rate
+            self.scheduler.step()
 
             LossThisEpoch = sum(loss_epoch) / len(loss_epoch)
             loss_values.append(LossThisEpoch)
