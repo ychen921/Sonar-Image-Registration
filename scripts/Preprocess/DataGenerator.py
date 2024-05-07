@@ -8,6 +8,7 @@ DataPath = r'/home/ychen921/808E/final_project/Dataset/Set2'
 SavePath = r'/home/ychen921/808E/final_project/Dataset/Overfit'
 IamgeType = '.png'
 NumImg = 3
+ShiftRng = 50
 
 def DuplicatedCheck(name, name_list):
     if name in name_list:
@@ -67,11 +68,13 @@ def main():
         cnt = 0
         check_list = []
         while cnt < NumImg:
-            # print(img_name)
+            
             if img_name < 30:
                 mov_name = random.randint(img_name+10, img_name+30)
+                
             elif img_name > (NumImage-1)-30:
                 mov_name = random.randint(img_name-30, img_name-10)
+            
             else:
                 RND = random.randint(0, 1)
                 if RND == 0:
