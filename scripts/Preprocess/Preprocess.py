@@ -38,6 +38,7 @@ def Convert2RA(img):
 
     # Reshape and post-process the sonar_image
     sonar_image = np.flip(sonar_image, axis=0).astype(np.uint8)
+    sonar_image = sonar_image[400:1000, :]
     sonar_image = cv2.resize(sonar_image, (256, 256), interpolation=cv2.INTER_LINEAR)
     
     return sonar_image
@@ -46,9 +47,9 @@ def Convert2RA(img):
 def main():
 
     Parser = argparse.ArgumentParser()
-    Parser.add_argument('--ClipPath', default='/home/ychen921/808E/final_project/Dataset/videos/video1.avi', 
+    Parser.add_argument('--ClipPath', default='/home/ychen921/808E/final_project/Dataset/videos/video3.avi', 
                         help='Clip path of images, Default:/home/ychen921/808E/final_project/Dataset/videos/video1.avi')
-    Parser.add_argument('--SavePath', default='/home/ychen921/808E/final_project/Dataset/Set1', 
+    Parser.add_argument('--SavePath', default='/home/ychen921/808E/final_project/Dataset/Set3', 
                         help='Save path of images, Default:/home/ychen921/808E/final_project/Dataset/Set1')
     
     Args = Parser.parse_args()

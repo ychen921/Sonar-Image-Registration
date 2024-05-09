@@ -15,12 +15,12 @@ class Solver(object):
         self.lr = learning_rate
         self.DataLoader = DataLoader
 
-        # self.model = AIRNet(kernels=16).to(self.device)
         self.model = model.to(self.device)
 
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr, amsgrad=True)
-        self.scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer, step_size=10, gamma=0.1)
+        self.scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer, step_size=10, gamma=0.5)
         self.loss_func = NCC()
+        # self.loss_func = nn.MSELoss()
         
     def train(self):
         
@@ -41,7 +41,8 @@ class Solver(object):
                 wraped, _ = self.model(fix_img, mov_img)
 
                 # Compute loss and its gradient
-                loss = self.loss_func(fix_img, wraped)
+                # loss = self.loss_func(fix_img, wraped)
+                loss = self.loss_func(wraped, fix_img)
                 loss_epoch.append(loss.item())
 
                 # Backpropation
