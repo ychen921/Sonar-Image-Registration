@@ -26,7 +26,8 @@ class AIRNet(nn.Module):
         self.ndim = ndim
         AdaptiveAvgPool = (nn.AdaptiveAvgPool2d, nn.AdaptiveAvgPool3d)[ndim - 2]
 
-        AF = nn.ELU
+        # AF = nn.ELU
+        AF = nn.ReLU
 
         self.max_scaling = 2
         self.max_rotation = 0.5 * pi

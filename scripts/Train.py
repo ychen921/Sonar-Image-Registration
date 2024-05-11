@@ -5,11 +5,9 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 import torchvision.transforms as T
 
-import os
 import sys
 import argparse
 from Solver import Solver
-from Networks.AIRNet_v2 import AIRNet_v2
 from Networks.AIRNet import AIRNet
 from DataReader.DataReader import SonarPairDataset
 
@@ -55,8 +53,7 @@ def main():
     data_loader = DataLoader(SonarPair, batch_size=MiniBatchSize, shuffle=False)
     
     model = AIRNet().to(device)
-    # model = AIRNet_v2().to(device)
-    # summary(model, (1, 128, 128))
+    # model = VoxelMorph2d(in_channels=2).to(device)
 
     # Train the model
     solver = Solver(model=model, DataLoader=data_loader, epochs=NumEpochs, learning_rate=lr, device=device)

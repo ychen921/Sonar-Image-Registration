@@ -20,7 +20,6 @@ class Solver(object):
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr, amsgrad=True)
         self.scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer, step_size=10, gamma=0.5)
         self.loss_func = NCC()
-        # self.loss_func = nn.MSELoss()
         
     def train(self):
         
@@ -33,16 +32,17 @@ class Solver(object):
             for i, (fix_img, mov_img) in enumerate(tqdm(self.DataLoader)):
                 fix_img = (fix_img/255.0).to(self.device)
                 mov_img = (mov_img/255.0).to(self.device)
-
+                # x = torch.cat([mov_img, fix_img], dim=1)#.permute(0,3,1,2)
+                # print(x.shape)
                 # Zero gradients for every batch
                 self.optimizer.zero_grad()
 
                 # Make predictions for this batch
                 wraped, _ = self.model(fix_img, mov_img)
+                # wraped = self.model(mov_img, fix_img)
 
                 # Compute loss and its gradient
-                # loss = self.loss_func(fix_img, wraped)
-                loss = self.loss_func(wraped, fix_img)
+                loss = self.loss_func(fix_img, wraped)
                 loss_epoch.append(loss.item())
 
                 # Backpropation
