@@ -13,9 +13,9 @@ class AIRNet(nn.Module):
                  kernel_size=3, 
                  kernels=32, 
                  linear_nodes=64,
-                 num_conv_layers=5,
+                 num_conv_layers=6,
                  num_dense_layers=2,
-                 num_downsamplings=4,
+                 num_downsamplings=5,
                  ndim=2
                  ):
         
@@ -26,8 +26,8 @@ class AIRNet(nn.Module):
         self.ndim = ndim
         AdaptiveAvgPool = (nn.AdaptiveAvgPool2d, nn.AdaptiveAvgPool3d)[ndim - 2]
 
-        # AF = nn.ELU
-        AF = nn.ReLU
+        AF = nn.ELU
+        # AF = nn.ReLU
 
         self.max_scaling = 2
         self.max_rotation = 0.5 * pi

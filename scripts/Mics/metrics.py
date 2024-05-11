@@ -39,3 +39,18 @@ class NCC(_Loss):
 
     def masked_metric(self, fixed: Tensor, warped: Tensor, mask: Tensor) -> Tensor:
         return -ncc_mask(fixed, warped, mask)
+    
+
+def dice_score(pred, target):
+    """This definition generalize to real valued pred and target vector.
+This should be differentiable.
+    pred: tensor with first dimension as batch
+    target: tensor with first dimension as batch
+    """
+    top = 2 *  torch.sum(pred * target, [1, 2, 3])
+    union = torch.sum(pred + target, [1, 2, 3])
+    eps = torch.ones_like(union) * 1e-5
+    bottom = torch.max(union, eps)
+    dice = torch.mean(top / bottom)
+    #print("Dice score", dice)
+    return dice

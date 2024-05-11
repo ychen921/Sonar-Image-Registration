@@ -6,9 +6,22 @@ import sys
 
 sys.dont_write_bytecode = True
 
-def plot_loss(LossEpochs):
-    plt.plot(LossEpochs)
+def plot_loss(loss_values, dice_loss):
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 5))
+    
+    # Plot loss over epoch
+    ax1.plot(loss_values)
+    ax1.set_ylabel('NCC Loss', fontsize=13)
+    
+    # Plot accuracy over epoch
+    ax2.plot(dice_loss)
+    ax2.set_xlabel('Epochs', fontsize=13)
+    ax2.set_ylabel('Dice', fontsize=13)
+    
+    plt.suptitle('Training NCC loss & Dice', fontsize=18)
+    # plt.savefig('../Save_fig/'+'TrainLossAccuracy.png')
     plt.show()
+
 
 
 class StableStd(torch.autograd.Function):
