@@ -1,8 +1,10 @@
+import os
+import sys
+import glob
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
-import sys
 
 sys.dont_write_bytecode = True
 
@@ -22,7 +24,20 @@ def plot_loss(loss_values, dice_loss):
     # plt.savefig('../Save_fig/'+'TrainLossAccuracy.png')
     plt.show()
 
-
+def FindLatestModel(CheckPointPath):
+    """
+    Finds Latest Model in CheckPointPath
+    Inputs:
+    CheckPointPath - Path where you have stored checkpoints
+    Outputs:
+    LatestFile - File Name of the latest checkpoint
+    """
+    FileList = glob.glob(CheckPointPath + '*.pt') # * means all if need specific format then *.csv
+    LatestFile = max(FileList, key=os.path.getctime)
+    # Strip everything else except needed information
+    # LatestFile = LatestFile.replace(CheckPointPath, '')
+    # LatestFile = LatestFile.replace('.ckpt.index', '')
+    return LatestFile
 
 class StableStd(torch.autograd.Function):
     @staticmethod

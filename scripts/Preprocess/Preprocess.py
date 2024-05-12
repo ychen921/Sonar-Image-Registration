@@ -47,9 +47,9 @@ def Convert2RA(img):
 def main():
 
     Parser = argparse.ArgumentParser()
-    Parser.add_argument('--ClipPath', default='/home/ychen921/808E/final_project/Dataset/videos/video2.avi', 
+    Parser.add_argument('--ClipPath', default='/home/ychen921/808E/final_project/Dataset/videos/video3.avi', 
                         help='Clip path of images, Default:/home/ychen921/808E/final_project/Dataset/videos/video1.avi')
-    Parser.add_argument('--SavePath', default='/home/ychen921/808E/final_project/Dataset/Set2', 
+    Parser.add_argument('--SavePath', default='/home/ychen921/808E/final_project/Dataset/Set3', 
                         help='Save path of images, Default:/home/ychen921/808E/final_project/Dataset/Set1')
     
     Args = Parser.parse_args()

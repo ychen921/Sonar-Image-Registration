@@ -5,9 +5,9 @@ from tqdm import tqdm
 
 
 DataPath = r'/home/ychen921/808E/final_project/Dataset/Set2'
-SavePath = r'/home/ychen921/808E/final_project/Dataset/Overfit'
+SavePath = r'/home/ychen921/808E/final_project/Dataset/Train'
 IamgeType = '.png'
-NumImg = 3
+NumImg = 8
 ShiftRng = 40
 
 def DuplicatedCheck(name, name_list):

@@ -9,16 +9,16 @@ from tqdm import tqdm
 sys.dont_write_bytecode = True
 
 class Solver(object):
-    def __init__(self, model, DataLoader, epochs, learning_rate=1e-3, 
+    def __init__(self, model, DataLoader, CheckPointPath, epochs, learning_rate=1e-3, 
                  device=torch.device('cpu'), DecayStep=10):
         self.device = device
         self.epochs = epochs
         self.lr = learning_rate
         self.DataLoader = DataLoader
+        self.CheckPointPath = CheckPointPath
 
         self.model = model.to(self.device)
 
-        # self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr, amsgrad=True)
         self.optimizer = torch.optim.SGD(model.parameters(), lr=self.lr, momentum=0.9)
         self.scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer, step_size=DecayStep, gamma=0.5)
         self.loss_func = NCC()
@@ -60,13 +60,22 @@ class Solver(object):
             # Update the learning rate
             self.scheduler.step()
 
+            # Compute NCC and Dice loss of epoch 
             LossThisEpoch = sum(loss_epoch) / len(loss_epoch)
             loss_values.append(LossThisEpoch)
 
             DiceThisEpoch = sum(dice_epoch) / len(dice_epoch)
             dice_values.append(DiceThisEpoch*1e3)
 
+            print('Epoch:{}, NCC Loss:{}, Dice:{}'.format(epoch+1, LossThisEpoch, DiceThisEpoch*1e3))
 
-            print('Epoch:{}, NCC Loss:{}, Dice:{}\n'.format(epoch+1, LossThisEpoch, DiceThisEpoch*1e3))
+            # Save epoch model
+            SaveName = self.CheckPointPath + str(epoch) + '_model.pt'
+            torch.save({
+                        'epoch': epoch,
+                        'model_state_dict': self.model.state_dict(),
+                        'optimizer_state_dict': self.optimizer.state_dict(),
+                        }, SaveName)
+            print(SaveName + ' Model Saved...\n')
 
         plot_loss(loss_values, dice_values)
