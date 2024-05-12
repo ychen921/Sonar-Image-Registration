@@ -10,12 +10,13 @@ sys.dont_write_bytecode = True
 
 class Solver(object):
     def __init__(self, model, DataLoader, CheckPointPath, epochs, learning_rate=1e-3, 
-                 device=torch.device('cpu'), DecayStep=10):
+                 device=torch.device('cpu'), DecayStep=10, LatestFile=None):
         self.device = device
         self.epochs = epochs
         self.lr = learning_rate
         self.DataLoader = DataLoader
         self.CheckPointPath = CheckPointPath
+        self.LatestFile = LatestFile
 
         self.model = model.to(self.device)
 
@@ -25,9 +26,26 @@ class Solver(object):
         
     def train(self):
         
+        if self.LatestFile is not None:
+            # Load necessary info
+            checkpoint = torch.load(self.LatestFile)
+            self.model.load_state_dict(checkpoint['model_state_dict'])
+            self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+            StartEpoch = int(checkpoint['epoch'])+1
+            # loss = checkpoint['loss']
+            
+            # Training mode
+            self.model.train() 
+            
+            print('Loaded latest checkpoint with the name ' + self.LatestFile + '....')
+        else:
+            StartEpoch = 0
+            print('New model initialized....')
+
+        
         loss_values = []
         dice_values = []
-        for epoch in range(self.epochs):
+        for epoch in range(StartEpoch, self.epochs):
             loss_epoch = []
             dice_epoch = []
             

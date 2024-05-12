@@ -92,7 +92,8 @@ def main():
 
     # Train the model
     solver = Solver(model=model, DataLoader=data_loader, epochs=NumEpochs,
-                     learning_rate=lr, device=device, DecayStep=DecayStep, CheckPointPath=CheckPointPath)
+                     learning_rate=lr, device=device, DecayStep=DecayStep, 
+                     CheckPointPath=CheckPointPath, LatestFile=LatestFile)
     solver.train()
 
 if __name__ == '__main__':
