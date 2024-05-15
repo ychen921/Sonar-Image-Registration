@@ -3,7 +3,6 @@ import torch.nn
 from torchsummary import summary
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-import torchvision.transforms as T
 
 import os
 import sys
@@ -39,18 +38,24 @@ def pretty_print(NumEpoch, Batchsize, LR, DecayStep):
 def main():
 
     Parser = argparse.ArgumentParser()
-    Parser.add_argument('--DataPath', default="/home/ychen921/808E/final_project/Dataset/Overfit", 
+    Parser.add_argument('--DataPath', default="/home/ychen921/808E/final_project/Dataset/Train", 
                         help='Base path of images, Default:/home/ychen921/808E/final_project/Dataset/Train')
+    
     Parser.add_argument('--CheckPointPath', default='/home/ychen921/808E/final_project/Checkpoints/', 
                         help='Path to save Checkpoints, Default: ../Checkpoints/')
-    Parser.add_argument('--NumEpochs', type=int, default=50, 
+    
+    Parser.add_argument('--NumEpochs', type=int, default=75, 
                         help='Number of Epochs to Train for, Default:10')
+    
     Parser.add_argument('--MiniBatchSize', type=int, default=32, 
                         help='Size of the MiniBatch to use, Default:32')
+    
     Parser.add_argument('--LearningRate', type=int, default=1e-3, 
                         help='Size of the MiniBatch to use, Default:0.005')
+    
     Parser.add_argument('--LrDecayStep', type=int, default=10, 
                         help='Period of learning rate decay, Default:15')
+    
     Parser.add_argument('--LoadCheckPoint', type=int, default=0,
                          help='Load Model from latest Checkpoint from CheckPointsPath?, Default:0')
 
@@ -86,8 +91,8 @@ def main():
     data_loader = DataLoader(SonarPair, batch_size=MiniBatchSize, shuffle=False)
     
     # model = AIRNet().to(device)
-    # model = InceptionNet().to(device)
-    model = DenseNet().to(device)
+    model = InceptionNet().to(device)
+    # model = DenseNet().to(device)
 
 
     # Train the model
