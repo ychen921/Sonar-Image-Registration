@@ -5,7 +5,7 @@ In this project, we analyze state-of-the-art unsupervised learning architecture 
 To train a neural network effectively, a substantial volume of datasets is indispensable. Specifically, our study necessitates a significant quantity of sonar image pairs. We have compiled tailored datasets designated for training, validation, and testing purposes. The data was acquired within a water tank environment by maneuvering a forward-looking sonar across a scene.
 
 ## Architecture
-| <img src="./figures/AIRNet.png" width="60%">| 
+| <img src="./figures/AIRNet.png" width="80%">| 
 |:--:| 
 | *Architecture* |
 The figure above shows our architecture of the model. We replece the ConvNet to Incpection-v1 to encode 2 patches of images to extract spatial information. Then, flatten and concatenate the Inception output feature map and pass to fully connected layers that produce the 1 by 6 vector which is a predicted affine transformation parameters. Last, apply spatial transformation layer in our baseline which input moving and predicted affine parameters and wrapped the moving sonar image. 
