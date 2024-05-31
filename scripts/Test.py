@@ -28,7 +28,7 @@ def main():
     Parser.add_argument('--NumEpochs', type=int, default=10, 
                         help='Number of Epochs to Train for, Default:10')
     
-    Parser.add_argument('--CkptsPath', dest='CkptsPath', default='/home/ychen921/808E/final_project/DLIR_ckpts', 
+    Parser.add_argument('--CkptsPath', dest='CkptsPath', default='/home/ychen921/808E/final_project/Dense_ckpts', 
                         help='Path to load latest model from, Default:/home/ychen921/808E/final_project/Inception_ckpts')
     
     Parser.add_argument('--BasePath', dest='BasePath', default='/home/ychen921/808E/final_project/Dataset/Test',
@@ -47,9 +47,9 @@ def main():
     SonarPair = SonarPairDataset(data_folder=BasePath, transform=transform)
     data_loader = DataLoader(SonarPair, batch_size=32, shuffle=False)
 
-    model = AIRNet().to(device)
+    # model = AIRNet().to(device)
     # model = InceptionNet().to(device)
-    # model = DenseNet().to(device)
+    model = DenseNet().to(device)
 
     loss_values = []
     dice_values = []

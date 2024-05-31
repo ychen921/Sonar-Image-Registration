@@ -91,8 +91,8 @@ def main():
     data_loader = DataLoader(SonarPair, batch_size=MiniBatchSize, shuffle=False)
     
     # model = AIRNet().to(device)
-    model = InceptionNet().to(device)
-    # model = DenseNet().to(device)
+    # model = InceptionNet().to(device)
+    model = DenseNet().to(device)
 
 
     # Train the model
