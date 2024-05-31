@@ -6,6 +6,10 @@ To train a neural network effectively, a substantial volume of datasets is indis
 
 ## Architecture
 
+The figure above shows our architecture of the model. We replece the ConvNet to Incpection-v1 to encode 2 patches of images to extract spatial information. Then, flatten and concatenate the Inception output feature map pass to fully connected layers and produce the 1 by 6 vector which is a predicted affine transformation parameters. Last, apply spatial transformation layer in our baseline which input moving and predicted affine parameters and wrapped the moving sonar image. 
+
+The negative normalized cross-correlation (NCC) is chosen to train the network. The NCC measures the similarity between two images based on their intensity values. The negative NCC is often used as a loss function because optimization algorithms typically minimize a loss function to find the optimal transformation parameters for image registration.
+
 ## Image Preprocessing
 To effectively train the image registration model, it is essential that the input images possess uniform width and height dimensions. To maximize the field of view offered by sonar images, we intend to retain the entire scope of the sonar image without cropping specific regions. This involves converting the recorded sonar images into Range-azimuth images. 
 
