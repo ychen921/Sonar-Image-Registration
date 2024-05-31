@@ -1,5 +1,5 @@
 # End-to-End Unsupervised Learning for Sonar Image Registration
-In this project, we analyze state-of-the-art unsupervised learning architecture of image registration technique such as DLIRNet [1], which can be applied to perform registration on unseen image pairs in one pass. The neural network architecture obtain the parameters from different forms of ConvNet by inputting a pair of moving and fixed images. The output parameters (affine transformation) will be passed to a spatial transformer [2] and a resampler which wraps the moving image to the fixed image. The performance will be evaluated by a similarity metric (NCC) between the wrapped and fixed images. Besides, we replace the ConvNet in DLIRNet to Inception blocks [4] and Dense blocks [3] in this project.
+In this project, we analyze state-of-the-art unsupervised learning architecture of the image registration technique such as DLIRNet [1], which can be applied to perform registration on unseen image pairs in one pass. The neural network architecture obtains the parameters from different forms of ConvNet by inputting a pair of moving and fixed images. The output parameters (affine transformation) will be passed to a spatial transformer [2] and a resampler which wraps the moving image into the fixed image. The performance will be evaluated by a similarity metric (NCC) between the wrapped and fixed images. Besides, we replace the ConvNet in DLIRNet with Inception blocks [4] and Dense blocks [3] in this project.
 
 ## Data
 To train a neural network effectively, a substantial volume of datasets is indispensable. Specifically, our study necessitates a significant quantity of sonar image pairs. We have compiled tailored datasets designated for training, validation, and testing purposes. The data was acquired within a water tank environment by maneuvering a forward-looking sonar across a scene.
@@ -9,7 +9,7 @@ To train a neural network effectively, a substantial volume of datasets is indis
 |:--:| 
 | *Architecture* |
 
-The figure above shows our architecture of the model that follow the DLIRNet baseline [1]. We use regression model to encode 2 patches of images to extract spatial information. Then, flatten and concatenate the Inception output feature map and pass to fully connected layers that produce the 1 by 6 vector which is a predicted affine transformation parameters. Last, apply spatial transformation layer in our baseline which input moving and predicted affine parameters and wrapped the moving sonar image. 
+The figure above shows our architecture of the model that follows the DLIRNet baseline [1]. We use the regression model to encode 2 patches of images to extract spatial information. Then, flatten and concatenate the Inception output feature map and pass to fully connected layers that produce the 1 by 6 vector which are predicted affine transformation parameters. Last, apply a spatial transformation layer in our baseline which inputs moving and predicted affine parameters and wraps the moving sonar image. 
 
 The negative normalized cross-correlation (NCC) is chosen to train the network. The NCC measures the similarity between two images based on their intensity values. The negative NCC is often used as a loss function because optimization algorithms typically minimize a loss function to find the optimal transformation parameters for image registration.
 
@@ -18,7 +18,7 @@ To effectively train the image registration model, it is essential that the inpu
 
 According to the sonar calibration, we have determined that the minimum bottom range in the original Oculus sonar image corresponds to the image coordinate (959, 1025). Additionally, the Range value at this coordinate is 971. Utilizing this contextual information, we can employ specific formulas to convert each pixel value within the image plane to its corresponding Range-azimuth representation.
 
-The Range resolution of the Oculus sonar image is 0.0025 meters in 0 to 3.5 meters. The azimuth resolution is 0.25 degrees in -30 to 30 degrees. In sum, we can have a 1400 x 267 Range-azimuth image. The original Oculus sonar image and Range-Azimuth image is shown below.
+The Range resolution of the Oculus sonar image is 0.0025 meters in 0 to 3.5 meters. The azimuth resolution is 0.25 degrees in -30 to 30 degrees. In sum, we can have a 1400 x 267 Range-azimuth image. The original Oculus sonar image and Range-Azimuth image are shown below.
 
 Original |  Range-Azimuth |
 :-------------------------:|:-------------------------:
@@ -47,11 +47,11 @@ python3 Test.py --NumEpochs {Number of training epoch} --CkptsPath {Directory of
 ## Visualization & Performance
 The figures below demonstrate the result of DLIRNets. 
 
-| <img src="./figures/demo_0.png" width="80%">| <img src="./figures/demo_7.png" width="80%">| <img src="./figures/demo_5.png" width="80%">| 
+| <img src="./figures/demo_0.png">| <img src="./figures/demo_7.png">| <img src="./figures/demo_5.png">| 
 |:--:|:--:|:--:| 
 | *DLIRNet* | *Inception* | *Dense* |
 
-In addition, we have show the NCC score of each architecture.
+In addition, we have shown the NCC score of each architecture.
 | NCC \ Model       | DLIRNet     | Inception    |  Dense        |
 | :---        |    :----:       |     :----:       |    :----:       |
 | Training | 0.737 | **0.837**  | 0.755 |
