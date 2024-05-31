@@ -15,7 +15,7 @@ The Range resolution of the Oculus sonar image is 0.0025 meters in 0 to 3.5 mete
 
 Original |  Range-Azimuth 
 :-------------------------:|:-------------------------:
-<img src="./figures/Oculus3-6.jpg" width="40%">  |  ![](./figures/RangeAzimuth.png) 
+<img src="./figures/Oculus3-6.jpg" width="45%">  |  <img src="./figures/RangeAzimuth.png"> 
 
 ## Usage
 
